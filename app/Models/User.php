@@ -33,13 +33,4 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    /**
-     * Get the services managed by the archivist.
-     */
-
-     public function services()
-     {
-         return $this->hasMany(Service::class, 'archivist_id');
-     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -22,6 +23,7 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = Route::current()->parameter('archivist');
         return [
             'firstname' => ['required', 'string', 'max:50'],
             'lastname' => ['required', 'string', 'max:25'],

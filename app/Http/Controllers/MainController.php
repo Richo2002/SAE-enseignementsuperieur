@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\ProfileRequest;
+use App\Models\Direction;
 
 class MainController extends Controller
 {
@@ -43,6 +44,15 @@ class MainController extends Controller
         return response()->json([
             'data' => $superAdmin,
             'message' => 'Le super administrateur a été enregistré avec succès'
+        ]);
+    }
+
+    public function filingPlan()
+    {
+        $filingPlan = Direction::all();
+
+        return view('super-admin.filing-plan', [
+            'filingPlan' => $filingPlan
         ]);
     }
 }

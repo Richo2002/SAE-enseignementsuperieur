@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Direction;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,12 @@ class DirectionController extends Controller
      */
     public function index()
     {
-        //
+        $directions = Direction::all();
+
+        return response()->json([
+            'data' => $directions,
+            'message' => 'Directions récupérées avec succès'
+        ]);
     }
 
     /**
@@ -28,8 +34,16 @@ class DirectionController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'archivist_id' => ['required'],
+        ]);
+
+        User::findOrFail(intval($request->archivist_id));
+
         $direction = Direction::create([
-            'name' => $request->name
+            'name' => $request->name,
+            'archivist_id' => intval($request->archivist_id),
         ]);
 
         return response()->json([
@@ -51,10 +65,10 @@ class DirectionController extends Controller
      */
     public function edit(string $id)
     {
-        $user = Direction::findOrFail(intval($id));
+        $direction = Direction::findOrFail(intval($id));
 
         return response()->json([
-            'data' => $user,
+            'data' => $direction,
             'message' => 'Direction éditée avec succès'
         ]);
     }
@@ -62,12 +76,23 @@ class DirectionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, int $id)
     {
-        $user = Direction::findOrFail(intval($id));
+        $direction = Direction::findOrFail(intval($id));
+
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'archivist_id' => ['required'],
+        ]);
+
+        User::findOrFail(intval($request->archivist_id));
+
+        $direction->name = $request->name;
+        $direction->archivist_id = intval($request->archivist_id);
+        $direction->save();
 
         return response()->json([
-            'data' => $user,
+            'data' => $direction,
             'message' => 'Direction modifiée avec succès'
         ]);
     }

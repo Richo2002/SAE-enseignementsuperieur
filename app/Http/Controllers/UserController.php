@@ -20,13 +20,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::where('type', '<>', 'Super Administrateur')->get();
+        // $archivists = User::where('type', '<>', 'Super Administrateur')->get();
 
-        return response()->json([
-            'data' => $users,
-            'message' => 'Archivistes récupérés avec succès'
-        ]);
-
+        return view('super-admin.archivists');
     }
 
     /**
@@ -36,7 +32,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('super-admin.new-archivist');
     }
 
     /**
@@ -47,7 +43,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $user = User::create([
+        $archivist = User::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'email' => $request->email,
@@ -58,17 +54,14 @@ class UserController extends Controller
 
         $status = Password::sendResetLink(
             $request->only('email'),
-            function ($message) use($user) {
-                $message->notify(new NewAccountNotification($user));
+            function ($message) use($archivist) {
+                $message->notify(new NewAccountNotification($archivist));
             }
         );
 
          if($status == Password::RESET_LINK_SENT)
          {
-            return response()->json([
-                'data' => $user,
-                'message' => 'Compte Archiviste crée avec succès'
-            ]);
+            return redirect()->route('archivists.index');
          }
          else
          {
@@ -79,11 +72,7 @@ class UserController extends Controller
                 $last_user->delete();
             }
 
-            return response()->json([
-                'message' => __($status)
-            ]);
-
-            // return back()->withInput($request->only('email'))->withErrors(['email' => __($status)]);
+            return back()->withInput($request->only('email'))->withErrors(['email' => __($status)]);
          }
     }
 
@@ -93,7 +82,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
@@ -106,11 +95,10 @@ class UserController extends Controller
      */
     public function edit(int $id)
     {
-        $user = User::findOrFail(intval($id));
+        $archivist = User::findOrFail(intval($id));
 
-        return response()->json([
-            'data' => $user,
-            'message' => 'Profil édité avec succès'
+        return view('super-admin.new-archivist', [
+            'archivist' => $archivist,
         ]);
     }
 
@@ -121,33 +109,30 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, string $id)
+    public function update(UserRequest $request, int $id)
     {
-        $user = User::findOrFail(intval($id));
+        $archivist = User::findOrFail(intval($id));
 
-        $user->firstname = $request->firstname;
-        $user->lastname = $request->lastname;
-        $user->email = $request->email;
-        $user->phone_number = $request->phone_number;
+        $archivist->firstname = $request->firstname;
+        $archivist->lastname = $request->lastname;
+        $archivist->email = $request->email;
+        $archivist->phone_number = $request->phone_number;
 
-        $user->save();
+        $archivist->save();
 
-        return response()->json([
-            'data' => $user,
-            'message' => 'Pofil modifié '.$request->role.' avec succès'
-        ]);
+        return redirect()->route('archivists.index');
     }
 
-    public function enableOrDisable(int $id)
+    public function getArhivistsWhoDoesntHaveDirection()
     {
-
-        $user = User::where('type', '<>', 'Super Administrateur')->findOrfail(intval($id));
-
-        $user->status ? $user->update(['status' => false]) : $user->update(['status' => true]);
+        $archivists = User::where('type', '<>', 'Super Administrateur')
+                            ->where('status', true)
+                            ->whereDoesntHave('direction')
+                            ->get();
 
         return response()->json([
-            'data' => $user,
-            'message' => $user->status ? 'Compte activé avec succès' : 'Compte désactivé avec succès'
+            'data' => $archivists,
+            'message' => 'Archivistes récupérés avec succès'
         ]);
     }
 }

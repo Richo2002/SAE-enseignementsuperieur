@@ -19,7 +19,6 @@ return new class extends Migration
 
             $table->nestedSet();
 
-            $table->foreignId('user_id')->constrained(table: 'users', indexName: 'archivist_id');
             $table->foreignId('direction_id')->constrained();
         });
     }

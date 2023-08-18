@@ -28,15 +28,4 @@ class Service extends Model
     {
         return $this->hasMany(Archive::class);
     }
-
-    /**
-     * Get the archivist who manages the archive of this service.
-     */
-
-     public function archivist()
-     {
-         return $this->belongsTo(User::class);
-     }
-
-
 }

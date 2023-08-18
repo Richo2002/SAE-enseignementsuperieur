@@ -1,9 +1,12 @@
 <?php
 
-use App\Http\Controllers\MainController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\ChildServiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MainController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\DirectionController;
+use App\Http\Controllers\ParentServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +27,10 @@ Route::get('/create-super-admin-account', [MainController::class, 'createSuperAd
 
 Route::resource('archivists', UserController::class);
 Route::get('archivists/{id}/enable-or-disable-account', [UserController::class, 'enableOrDisable']);
+
+Route::resource('directions', DirectionController::class);
+
+Route::resource('directions.parent-services', ParentServiceController::class)->shallow();
+
+Route::resource('parent-services.child-services', ChildServiceController::class)->shallow();
+
