@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
+            $table->nestedSet();
             $table->timestamps();
 
-            $table->nestedSet();
-
-            $table->foreignId('direction_id')->constrained();
+            $table->foreignId('direction_id')->nullable()->constrained();
         });
     }
 

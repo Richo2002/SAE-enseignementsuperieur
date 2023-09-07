@@ -34,10 +34,11 @@ class ChildServiceController extends Controller
             'name' => $request->name
         ]);
 
-        return response()->json([
+        /*return response()->json([
             'data' => $service,
             'message' => 'Service enfant ajouté avec succès'
-        ]);
+        ]);*/
+        return redirect()->route('filing.plan');
     }
 
     /**
@@ -81,9 +82,18 @@ class ChildServiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, int $id)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+        ]);
+
+        $service = Service::findOrFail(intval($id));
+
+        $service->name = $request->name;
+        $service->save();
+
+        return redirect()->route('filing.plan');
     }
 
     /**

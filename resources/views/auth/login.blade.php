@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -44,6 +43,7 @@
         border: 1px solid #ffffff;
         border-radius: 10px;
         font-size: 18px;
+        cursor: pointer;
     }
 
     input{

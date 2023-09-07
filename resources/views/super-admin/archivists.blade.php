@@ -7,10 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta class="datePicker" data-datepicker-id="ryyp8n-773m-7vm15o">
-    {{-- <link rel="icon" type="image/png" href="/img/logo.jpeg"> --}}
-    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
-    </script> --}}
     <link href="/css/bootstrap-toggle/bootstrap-toggle.css" rel="stylesheet" data-auto="1">
     <link href="/css/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet" data-auto="1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -57,20 +53,14 @@
     <div id="wrapper" lang="fr">
 
         <div id="page-wrapper" style="padding-bottom: 50px;">
-            <div id="loadingModal" style="display: none">
-                <span
-                    style="z-index:2; background-color: rgba(200,200,200,0.3); position: fixed; height: 100%; width: 100% "></span>
-                <div style="position: fixed; z-index:3; bottom: 50%; right: 42%;">
-                    <i class="fa fa-spinner fa-spin fa-5x"></i>
-                </div>
-            </div>
+
             <section role="main" id="app_sae_main" style="z-index: 1;">
-                <div id="contain" data-translate-catalog="auth/messages">
+                <div id="contain" style="margin-top: 100px">
                     <div class="container-fluid">
                         <div class="page-header">
                             <h1>
                                 <i class="fa fa-user"></i>
-                                Utilisateurs
+                                Gestion des archivistes
                             </h1>
                         </div>
                     </div>
@@ -80,7 +70,7 @@
                                 <div class="panel panel-primary">
                                     <div class="panel-heading clearfix">
                                         <div class="pull-left">
-                                            <h4>Utilisateurs</h4>
+                                            <h4>Tous les archivistes</h4>
                                         </div>
 
                                         <div class="pull-right">
@@ -101,17 +91,15 @@
                 <span class="hide" id="securityLevel"></span>
         </div>
 
-        {{-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-            integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
-            integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous">
-        </script> --}}
-
         <script src="/js/bootstrap-toggle/bootstrap-toggle.js"></script>
 
         <script src="/js/script.js"></script>
-
+        <script type="text/javascript">
+            window.livewire.on('closeModal', () => {
+                $('#exampleModal1').modal('hide');
+                $('#exampleModal2').modal('hide');
+            });
+        </script>
         @livewireScripts
 </body>
 

@@ -18,4 +18,14 @@ class Archive extends Model
     {
         return $this->belongsTo(Service::class);
     }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
 }

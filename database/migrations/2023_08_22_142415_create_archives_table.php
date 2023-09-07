@@ -14,17 +14,20 @@ return new class extends Migration
         Schema::create('archives', function (Blueprint $table) {
             $table->id();
 
-            $table->string('number_order');
+            $table->integer('number_order');
             $table->string('call_number');
             $table->string('project')->nullable();
             $table->string('analyze');
             $table->string('piece')->nullable();
             $table->string('tenderer')->nullable();
-            $table->string('extreme_date');
+            $table->string('extreme_date')->nullable();
             $table->string('observation')->nullable();
+            $table->integer('duree');
+            $table->string('final_sort')->nullable();
             $table->timestamps();
 
-            $table->foreignId('service_id')->nullable()->constrained();
+            $table->foreignId('service_id')->constrained();
+            $table->foreignId('department_id')->constrained();
         });
     }
 

@@ -36,20 +36,13 @@ class DirectionController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'archivist_id' => ['required'],
         ]);
-
-        User::findOrFail(intval($request->archivist_id));
 
         $direction = Direction::create([
             'name' => $request->name,
-            'archivist_id' => intval($request->archivist_id),
         ]);
 
-        return response()->json([
-            'data' => $direction,
-            'message' => 'Direction ajoutée avec succès'
-        ]);
+        return redirect()->route('filing.plan');
     }
 
     /**
@@ -82,19 +75,12 @@ class DirectionController extends Controller
 
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'archivist_id' => ['required'],
         ]);
-
-        User::findOrFail(intval($request->archivist_id));
 
         $direction->name = $request->name;
-        $direction->archivist_id = intval($request->archivist_id);
         $direction->save();
 
-        return response()->json([
-            'data' => $direction,
-            'message' => 'Direction modifiée avec succès'
-        ]);
+        return redirect()->route('filing.plan');
     }
 
     /**

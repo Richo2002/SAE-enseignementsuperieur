@@ -42,6 +42,7 @@
         border: 1px solid #ffffff;
         border-radius: 10px;
         font-size: 18px;
+        cursor: pointer;
     }
 
     input{

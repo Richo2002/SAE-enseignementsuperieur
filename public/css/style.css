@@ -11,7 +11,13 @@ html {
   }
 
 
-
+    [x-cloak]{
+        opacity: 0.4;
+        pointer-events: none;
+        text-decoration: none;
+        cursor: not-allowed;
+    }
+    
   .navbar {
     z-index: 10000000;
     background-color: rgb(3, 95, 104);
@@ -88,12 +94,12 @@ html {
 
   #submenu-gestion{
     top: 59px;
-    right: 230px;
+    right: 130px;
   }
 
   #submenu-username{
     top: 59px;
-    right: 100px;
+    right: 0px;
   }
 
   .submenu a{
@@ -182,6 +188,14 @@ html {
     width: 80%;
     align-self: center;
     text-align: center;
+  }
+
+  #outLogBtn{
+    border: none;
+    background: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
   }
 
 

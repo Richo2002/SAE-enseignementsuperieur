@@ -16,8 +16,6 @@ return new class extends Migration
 
             $table->string('name');
             $table->timestamps();
-
-            $table->foreignId('user_id')->constrained(table: 'users', indexName: 'archivist_id');
         });
     }
 

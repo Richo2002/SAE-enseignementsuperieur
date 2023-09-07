@@ -15,10 +15,7 @@ class ParentServiceController extends Controller
     {
         $services = Service::where('direction_id', $directionId)->get();
 
-        return response()->json([
-            'data' => $services,
-            'message' => 'services récupérées avec succès'
-        ]);
+        return redirect()->route('filing.plan');
     }
 
     /**
@@ -45,10 +42,7 @@ class ParentServiceController extends Controller
             'direction_id' => intval($directionId),
         ]);
 
-        return response()->json([
-            'data' => $service,
-            'message' => 'Service parent ajouté avec succès'
-        ]);
+        return redirect()->route('filing.plan');
     }
 
     /**
@@ -94,10 +88,7 @@ class ParentServiceController extends Controller
         $service->name = $request->name;
         $service->save();
 
-        return response()->json([
-            'data' => $service,
-            'message' => 'Service parent modifié avec succès'
-        ]);
+        return redirect()->route('filing.plan');
     }
 
     /**

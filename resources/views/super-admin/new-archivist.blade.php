@@ -16,7 +16,6 @@
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/bootstrap-datetimepicker/bootstrap-datetimepicker.css">
-    </script>
     <script src="/js/jQuery-3.4.1/jquery-3.4.1.min.js" type="text/javascript" data-auto="1"></script>
     <script src="/js/jQueryUI_1.12.1/jquery-ui.min.js" type="text/javascript" data-auto="1"></script>
     <script src="/js/DataTables/datatables.js" type="text/javascript" data-auto="1"></script>
@@ -78,7 +77,7 @@
                                     <div class="col-xs-12">
                                         <br>
                                         <div class="form-group">
-                                            <label for="lastName" class="col-md-3 control-label">Nom<span
+                                            <label for="lastName" class="col-md-3 control-label">Nom :<span
                                                     style="color : red">*</span></label>
                                             <div class="col-md-9">
                                                 <input type="text" class="form-control" id="lastName"
@@ -90,7 +89,7 @@
                                                     @enderror
                                         </div>
                                         <div class="form-group">
-                                            <label for="firstName" class="col-md-3 control-label">Prénoms<span
+                                            <label for="firstName" class="col-md-3 control-label">Prénoms :<span
                                                     style="color : red">*</span></label>
                                             <div class="col-md-9">
                                                 <input type="text" class="form-control" id="accountName"
@@ -102,11 +101,11 @@
                                                     @enderror
                                         </div>
                                         <div class="form-group">
-                                            <label for="phone" class="col-md-3 control-label">Téléphone<span
+                                            <label for="phone" class="col-md-3 control-label">Téléphone :<span
                                                     style="color : red">*</span></label>
                                             <div class="col-md-9">
                                                 <input type="number" class="form-control" id="phone"
-                                                    name="phone_number" placeholder="Numéro de téléphone"
+                                                    name="phone_number" placeholder="Numéro de téléphone" required
                                                     value="{{ isset($archivist) ? $archivist->phone_number : old('phone_number') }}">
                                             </div>
                                                     @error('phone-number')
@@ -114,11 +113,11 @@
                                                     @enderror
                                         </div>
                                         <div class="form-group">
-                                            <label for="courriel" class="col-md-3 control-label">Courriel<span
-                                                    style="color : red">*</span></label>
+                                            <label for="courriel" class="col-md-3 control-label">Adresse e-mail :<span
+                                                    style="color : red">*</span> </label>
                                             <div class="col-md-9">
                                                 <input type="email" class="form-control" id="courriel" name="email"
-                                                    placeholder="E-mail"
+                                                    placeholder="E-mail" required
                                                     value="{{ isset($archivist) ? $archivist->email : old('email') }}">
                                             </div>
                                             @error('email')
@@ -126,23 +125,12 @@
                                             @enderror
                                         </div>
                                         <div class="form-group">
-                                            <label for="phone" class="col-md-3 control-label">Département<span
+                                            <label for="direction" class="col-md-3 control-label">Direction :<span
                                                     style="color : red">*</span></label>
                                             <div class="col-md-9">
-                                                <select name="departement" id="departement" class="form-control">
-                                                    <option value="alibori">Alibori</option>
-                                                    <option value="atacora">Atacora</option>
-                                                    <option value="atlantique">Atlantique</option>
-                                                    <option value="borgou">Borgou</option>
-                                                    <option value="collines">Collines</option>
-                                                    <option value="donga">Donga</option>
-                                                    <option value="couffo">Couffo</option>
-                                                    <option value="littoral">Littoral</option>
-                                                    <option value="mono">Mono</option>
-                                                    <option value="oueme">Ouémé</option>
-                                                    <option value="plateau">Plateau</option>
-                                                    <option value="zou">Zou</option>
-                                                </select>
+                                                <input type="text" class="form-control" id="direction" name="direction"
+                                                placeholder="Nom de la direction" required
+                                                value="{{ isset($archivist) ? $archivist->department->name : old('department') }}">
                                             </div>
                                                     @error('department')
                                                         <div class="text-danger">{{ $message }}</div>
@@ -153,7 +141,7 @@
                                         <div class="col-xs-6 pull-right">
                                             <div class="form-group">
                                                 <div class="">
-                                                    <button type="button" onclick="chargerPage('allUsers.html')"
+                                                    <button type="button" onclick="chargerPage('/archivists')"
                                                         class="btn btn-warning" id="userAccountCancelBtn"
                                                         title="Annuler"><i class="fa fa-undo"></i> Annuler</button>
                                                     <button id="user_saveUser" type="submit" class="btn btn-success"
@@ -168,13 +156,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <span class="hide" id="securityLevel"></span>
-                    <span class="hide" id="emptyOrganization_text">Aucune organisation choisie</span>
-                    <span class="hide" id="badPasswordVerification_text">Les mots de passe ne correspondent
-                        pas</span>
-                    <span class="hide" id="invalidEmail_text">Le courriel est mal-form&#xE9;</span>
-                    <span class="hide" id="empty_text">Les champs avec une &#xE9;toile sont obligatoires</span>
                 </div>
                 <script src="/js/bootstrap-toggle/bootstrap-toggle.js"></script>
             </div>

@@ -1,4 +1,4 @@
-<div x-data="{ archivistId : null}">
+<div x-data="{ 'archivistId':null }">
     <div class="table-responsive">
         <table class="table table-condensed dataTable no-footer"
             id="user_userList" style="margin: 0;"
@@ -24,7 +24,7 @@
                         style="width: 288.25px;">Courriel</th>
                     <th class="sorting_disabled" rowspan="1" colspan="1"
                         aria-label="Activé" style="width: 310.139px;">
-                        Département</th>
+                        Direction</th>
                     <th class="sorting_disabled" rowspan="1" colspan="1"
                         aria-label="role"
                         class="sorting_disabled" rowspan="1"
@@ -38,14 +38,11 @@
             </thead>
             <tbody>
                 @foreach ($archivists as $archivist)
-                    <tr id="aackermann" class="disabled_user odd"
-                        role="row">
+                    <tr class="disabled_user odd" role="row">
                         <td class="sorting_1">{{ $archivist->id }}</td>
-                        <td>{{ $archivist->lastname . ' ' . $archivist->firstname }}
-                        </td>
+                        <td>{{ $archivist->lastname . ' ' . $archivist->firstname }}</td>
                         <td>{{ $archivist->email }}</td>
-                        <td>{{ $archivist->departement }}</td>
-                        {{-- <td>Archiviste</td> --}}
+                        <td>{{ $archivist->department->name }}</td>
                         <td class="userStatus">
                             @if ($archivist->status)
                                 <i class="fa fa-check"></i>
@@ -59,12 +56,12 @@
                                 <a href="/archivists/{{ $archivist->id }}/edit"
                                     class="editUser btn btn-info"
                                     data-accountid="ccamus" title=""
-                                    data-original-title="Éditer">
+                                    data-original-title="Éditer" style="margin-right: 5px;">
                                     <span class="fa fa-fw fa-edit"></span>
                                 </a>
 
                                 @if ($archivist->status)
-                                    <a x-cloak x-on:click="archivistId = '{{ $archivist->id }}'" href="#"
+                                    <a x-cloak x-on:click.prevent="archivistId = '{{ $archivist->id }}'" href="#"
                                         class="disableUser btn btn-danger"
                                         data-accountid="ccamus" title=""
                                         data-toggle="modal"
@@ -73,7 +70,7 @@
                                         <span class="fa fa-fw fa-times"></span>
                                     </a>
                                 @else
-                                    <a x-cloak x-on:click="archivistId = '{{ $archivist->id }}'" href="#"
+                                    <a x-cloak x-on:click.prevent="archivistId = '{{ $archivist->id }}'" href="#"
                                         class="enableUser btn btn-danger"
                                         data-accountid="ccamus" title=""
                                         data-toggle="modal"
@@ -103,11 +100,11 @@
                             Êtes-vous sûr de vouloir activer le compte de cet arhiviste ?
                         </div>
 
-                        <div class="modal-footer" x-bind:action="'archivists/${archivistId}/enable-or-disable-account'" method="POST">
+                        <div class="modal-footer">
                             @csrf
                             <button type="button" class="btn btn-secondary"
                                 data-dismiss="modal">Annuler</button>
-                            <button x-on:click="$wire.enableOrDisable(archivistId)" type="submit"
+                            <button x-cloak x-on:click.prevent="$wire.enableOrDisable(archivistId)" type="submit"
                             class="btn btn-primary">Confirmer</button>
                         </div>
                     </div>
@@ -127,11 +124,13 @@
                         <div class="modal-body">
                             Êtes-vous sûr de vouloir désactiver le compte de cet arhiviste ?
                         </div>
+
                         <div class="modal-footer">
+                            @csrf
                             <button type="button" class="btn btn-secondary"
                                 data-dismiss="modal">Annuler</button>
-                            <button x-on:click="$wire.enableOrDisable(archivistId)" type="button"
-                                class="btn btn-primary">Confirmer</button>
+                            <button x-cloak x-on:click.prevent="$wire.enableOrDisable(archivistId)" type="submit"
+                            class="btn btn-primary">Confirmer</button>
                         </div>
                     </div>
                 </div>
@@ -175,6 +174,12 @@
                 });
                 $('[title]').tooltip();
                 $('[title]').tooltip();
+            </script>
+            <script type="text/javascript">
+                window.livewire.on('closeModal', () => {
+                    $('#exampleModal1').modal('hide');
+                    $('#exampleModal2').modal('hide');
+                });
             </script>
         </table>
     </div>

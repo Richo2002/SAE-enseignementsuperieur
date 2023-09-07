@@ -26,11 +26,11 @@ document.addEventListener('click', function(event) {
     const submenus = document.querySelectorAll('.submenu');
     const menuBurger = document.querySelector('.menu-burger');
     const menu = document.querySelector('.menu');
-  
+
     // Fermer les sous-menus ouverts lorsqu'on clique en dehors
     submenus.forEach(submenu => {
       if (!submenu.contains(event.target) && !menuBurger.contains(event.target) && !menu.contains(event.target)) {
         submenu.classList.remove('active');
       }
-    });    
+    });
   });

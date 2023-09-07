@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Models\Department;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -32,7 +33,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('super-admin.new-archivist');
+        $departments = Department::all();
+        return view('super-admin.new-archivist', [
+            'departments' => $departments
+        ]);
     }
 
     /**
@@ -43,12 +47,21 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
+        $department = Department::where('name', $request->direction)->first();
+
+        if($department === null){
+            $department = Department::create([
+                'name' => $request->direction,
+            ]);
+        }
+
         $archivist = User::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'email' => $request->email,
             'phone_number' => $request->phone_number,
             'type' => 'Archiviste',
+            'department_id' => $department->id,
             'password' => Str::random(8),
         ]);
 
@@ -96,9 +109,11 @@ class UserController extends Controller
     public function edit(int $id)
     {
         $archivist = User::findOrFail(intval($id));
+        $departments = Department::all();
 
         return view('super-admin.new-archivist', [
             'archivist' => $archivist,
+            'departments' => $departments
         ]);
     }
 
@@ -117,6 +132,7 @@ class UserController extends Controller
         $archivist->lastname = $request->lastname;
         $archivist->email = $request->email;
         $archivist->phone_number = $request->phone_number;
+        $archivist->department_id = $request->departmentId;
 
         $archivist->save();
 
@@ -135,4 +151,5 @@ class UserController extends Controller
             'message' => 'Archivistes récupérés avec succès'
         ]);
     }
+
 }

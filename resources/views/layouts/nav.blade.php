@@ -11,48 +11,56 @@
                 <i class="fa-solid fa-caret-down" style="color: #ffffff; font-size: 13px;"></i>
             </a>
             <ul class="submenu" id="submenu-gestion">
-                @if (Auth::user()->type=="Archiviste")
+                @if (Auth::user()->type == "Archiviste")
+
                     <li>
-                        <a href="archiviste.html">
-                            <i class="fa-solid fa-plus" style="color: #ffffff; font-size: 13px;"></i> Archiviste
+                        <a href="/archives/create">
+                            <i class="fa-solid fa-plus" style="color: #ffffff; font-size: 13px;"></i> Nouvelle archive
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/archives">
+                            <i class="fa-solid fa-plus" style="color: #ffffff; font-size: 13px;"></i> Archives
+                        </a>
+                    </li>
+
+                @else
+
+                    <li>
+                        <a href="/archivists/create">
+                            <i class="fa-solid fa-user-plus" style="color: #ffffff;   font-size: 13px;"></i>
+                            Nouvel archiviste
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/archivists">
+                            <i class="fa-solid fa-users" style="color: #ffffff;   font-size: 13px;"></i>
+                            Archivistes
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/filing-plan">
+                            <i class="fa-solid fa-sitemap" style="color: #ffffff;  font-size: 13px;"></i> Plan de
+                            classement
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('archives.mngt') }}">
+                            <i class="fa-solid fa-list-check" style="color: #ffffff; font-size: 13px;"></i>
+                            Gestion des archives
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('archives.stats') }}">
+                            <i class="fa-regular fa-file-lines" style="color: #ffffff; font-size: 13px;"></i>
+                            Rapports statistiques
                         </a>
                     </li>
                 @endif
-                <li>
-                    <a href="journal.html">
-                        <i class="fa-solid fa-clock-rotate-left" style="color: #ffffff; font-size: 13px;"></i>
-                        Journal des activités
-                    </a>
-                </li>
-                <li>
-                    <a href="/filing-plan">
-                        <i class="fa-solid fa-sitemap" style="color: #ffffff;  font-size: 13px;"></i> Plan de
-                        classement
-                    </a>
-                </li>
-                <li>
-                    <a href="archivists">
-                        <i class="fa-solid fa-users" style="color: #ffffff;   font-size: 13px;"></i>
-                        Utilisateurs
-                    </a>
-                </li>
-                <li>
-                    <a href="gestionarchive.html">
-                        <i class="fa-solid fa-list-check" style="color: #ffffff; font-size: 13px;"></i>
-                        Gestion des archives
-                    </a>
-                </li>
-                <li>
-                    <a href="statistiques.html">
-                        <i class="fa-regular fa-file-lines" style="color: #ffffff; font-size: 13px;"></i> Rapports
-                        statistiques
-                    </a>
-                </li>
-
             </ul>
         </li>
-
-
 
         <li class="navbar-links">
             <a href="#" onclick="toggleSubmenu('submenu-username')">
@@ -61,15 +69,15 @@
                 <i class="fa-solid fa-caret-down" style="color: #ffffff; font-size: 13px;"></i>
             </a>
             <ul class="submenu" id="submenu-username">
-                <li>
-                    <a href="myprofile.html">
+                {{-- <li>
+                    <a href="#">
                         <i class="fa-solid fa-user" style="color: #ffffff; font-size: 13px;"></i> Profil</a>
-                    </li>
-                @if (Auth::user())
+                </li> --}}
+                    @if (Auth::user())
                     <li>
                         <form action="/logout" method="POST">
                             @csrf
-                            <button type="submit" >
+                            <button type="submit" id="outLogBtn">
                                 <i class="fa-solid fa-right-from-bracket" style="color: #ffffff; font-size: 13px;"></i>
                                 Déconnexion
                             </button>
