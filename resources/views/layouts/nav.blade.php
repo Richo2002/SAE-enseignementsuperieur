@@ -69,11 +69,7 @@
                 <i class="fa-solid fa-caret-down" style="color: #ffffff; font-size: 13px;"></i>
             </a>
             <ul class="submenu" id="submenu-username">
-                {{-- <li>
-                    <a href="#">
-                        <i class="fa-solid fa-user" style="color: #ffffff; font-size: 13px;"></i> Profil</a>
-                </li> --}}
-                    @if (Auth::user())
+                @if (Auth::user())
                     <li>
                         <form action="/logout" method="POST">
                             @csrf
@@ -82,7 +78,6 @@
                                 Déconnexion
                             </button>
                         </form>
-
                     </li>
                 @endif
             </ul>

@@ -20,7 +20,7 @@ use App\Http\Controllers\ParentServiceController;
 |
 */
 
-Route::get('', function () {
+Route::get('/', function () {
     return view('auth.login');
 });
 
@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::post('archivists/{id}/enable-or-disable-account', [UserController::class, 'enableOrDisable'])->name('move.account');
 
     Route::resource('archives', ArchiveController::class);
+
     Route::post('/archives/search', [ArchiveController::class, 'search'])->name('archives.search');
     Route::post('/manage-archives/adminSearch', [ArchiveController::class, 'adminSearch'])->name('archives.searchFromAdmin');
     Route::get('/manage-archives', [ArchiveController::class, 'manageArchives'])->name('archives.mngt');

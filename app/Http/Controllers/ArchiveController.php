@@ -51,54 +51,61 @@ class ArchiveController extends Controller
 
         $department = Department::findOrFail(intval(Auth::user()->department_id));
 
-        $archive = Archive::create([
-            'number_order' => $request->number_order,
-            'call_number' => $request->call_number,
-            'project' => $request->project,
-            'analyze' => $request->analyze,
-            'piece' => $request->piece,
-            'tenderer' => $request->tenderer,
-            'extreme_date' => $request->extreme_date,
-            'observation' => $request->observation,
-            'duree' => $request->duree,
-            'final_sort' => $request->final_sort,
+        $find_call_number = Archive::where('call_number', $request->call_number)->first();
 
-            'service_id' => $request->service_id,
-            'department_id' =>$department->id,
-        ]);
-
-        $form_files = $request->file('myfiles');
-        $folder = 'archives/'.Str::lower($department->name).'/'.$request->call_number;
-        $folder = str_replace(' ', '_', $folder);
-
-        $allfiles = [];
-        $allNames = [];
-
-        foreach($form_files as $myfile)
+        if($find_call_number != null)
         {
-            //récupérer les noms originaux des fichiers
-            $allNames[] = $myfile->getClientOriginalName();
-
-            //stocker les fichiers sur le serveur
-            $path_image = Storage::putFile('public/'.$folder, $myfile);
-            $path_image_convert_to_table = explode('/', $path_image);
-
-            $allfiles[] = $path_image_convert_to_table;
+            return redirect()->route('archives.index')->withErrors(['message' => 'Enregistrement non effectué car cette archive a déjà été enregistrée.']);
         }
-
-        /*foreach($allfiles as $file)
-        {*/
-        for($i = 0; $i < count($allfiles); $i++)
+        else
         {
-            //enregistrement des fichiers dans la base de données
-            $newFile = File::create([
-                'path' => end($allfiles[$i]),
-                'basename' => $allNames[$i],
-                'archive_id' => $archive->id,
+
+            $archive = Archive::create([
+                'call_number' => $request->call_number,
+                'project' => $request->project,
+                'analyze' => $request->analyze,
+                'piece' => $request->piece,
+                'tenderer' => $request->tenderer,
+                'extreme_date' => $request->extreme_date,
+                'observation' => $request->observation,
+                'duree' => $request->duree,
+                'final_sort' => $request->final_sort,
+
+                'service_id' => $request->service_id,
+                'department_id' =>$department->id,
             ]);
-        }
 
-        return redirect()->route('archives.index');
+            $form_files = $request->file('myfiles');
+            $folder = 'archives/'.Str::lower($department->name).'/'.$request->call_number;
+            $folder = str_replace(' ', '_', $folder);
+
+            $allfiles = [];
+            $allNames = [];
+
+            foreach($form_files as $myfile)
+            {
+                //récupérer les noms originaux des fichiers
+                $allNames[] = $myfile->getClientOriginalName();
+
+                //stocker les fichiers sur le serveur
+                $path_image = Storage::putFile('public/'.$folder, $myfile);
+                $path_image_convert_to_table = explode('/', $path_image);
+
+                $allfiles[] = $path_image_convert_to_table;
+            }
+
+            for($i = 0; $i < count($allfiles); $i++)
+            {
+                //enregistrement des fichiers dans la base de données
+                $newFile = File::create([
+                    'path' => end($allfiles[$i]),
+                    'basename' => $allNames[$i],
+                    'archive_id' => $archive->id,
+                ]);
+            }
+
+            return redirect()->route('archives.index');
+        }
     }
 
     //fonction de recherche par un archiviste
@@ -110,13 +117,19 @@ class ArchiveController extends Controller
         $end_date = $request->dateEnd;
 
         //faire des requêtes pour sélectionner les archives selon des critères
-        if ($search_value && $search_field === 'name')
+        if ($search_value && $search_field === 'child_name')
         {
             $query = Archive::whereHas('service', function($query) use ($search_value) {
                  $query->where('name', 'LIKE', "%$search_value%");
             });
         }
-        else if($search_value && $search_field != 'name')
+        else if($search_value && $search_field === 'parent_name')
+        {
+            $query = Archive::whereHas('service.direction', function($query) use ($search_value) {
+                $query->where('name', 'LIKE', "%$search_value%");
+            });
+        }
+        else if($search_value && $search_field != 'child_name' && $search_field != 'parent_name')
         {
            $query = Archive::where($search_field, 'LIKE', "%$search_value%");
         }
@@ -182,13 +195,19 @@ class ArchiveController extends Controller
                  $query->where('name', 'LIKE', "%$search_value%");
             });
         }
+        else if($search_value && $search_field === 'parent_name')
+        {
+            $query = Archive::whereHas('service.direction', function($query) use ($search_value) {
+                $query->where('name', 'LIKE', "%$search_value%");
+            });
+        }
         else if($search_value && $search_field === 'department_name')
         {
             $query = Archive::whereHas('department', function($query) use ($search_value) {
                 $query->where('name', 'LIKE', "%$search_value%");
            });
         }
-        else if($search_value && $search_field != 'child_name' && $search_field != 'department_name')
+        else if($search_value && $search_field != 'child_name' && $search_field != 'parent_name' && $search_field != 'department_name')
         {
            $query = Archive::where($search_field, 'LIKE', "%$search_value%");
         }
@@ -356,40 +375,40 @@ class ArchiveController extends Controller
             $stats_values = $departments;
             $statsBy = 'direction';
         }
-        else if($stats_field === 'service')
+        else if($stats_field === 'serie')
         {
-            $services = Service::whereNotNull('direction_id')->get();
-            foreach($services as $service)
+            $series = Direction::all();
+            foreach($series as $serie)
             {
                 $count = 0;
                 foreach($archives as $archive)
                 {
-                    if($archive->service->parent_id == $service->id)
+                    if($archive->service->direction->id == $serie->id)
                     {
                         $count += 1;
                     }
                 }
                 $number_archives[] = $count;
             }
-            $stats_values = $services;
+            $stats_values = $series;
             $statsBy = 'série';
         }
         else
         {
-            $subServices = Service::whereNotNull('parent_id')->get();
-            foreach($subServices as $subService)
+            $subSeries = Service::whereNotNull('direction_id')->get();
+            foreach($subSeries as $subSerie)
             {
                 $count = 0;
                 foreach($archives as $archive)
                 {
-                    if($archive->service_id == $subService->id)
+                    if($archive->service_id == $subSerie->id)
                     {
                         $count += 1;
                     }
                 }
                 $number_archives[] = $count;
             }
-            $stats_values = $subServices;
+            $stats_values = $subSeries;
             $statsBy = 'sous-série';
         }
 

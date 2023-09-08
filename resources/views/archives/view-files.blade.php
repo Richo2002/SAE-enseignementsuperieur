@@ -110,7 +110,7 @@
                                                     @foreach ($files as $file)
                                                         <tr>
                                                             <td>{{ $file->id }}</td>
-                                                            <td>{{ $file->path }}</td>
+                                                            <td>{{ $file->basename }}</td>
                                                             <td>{{ $file->created_at }}</td>
                                                             <td>
                                                                 <a href="{{ route('view.pdf', $file) }}" class="btn  btn-info" title="Visualiser le fichier">

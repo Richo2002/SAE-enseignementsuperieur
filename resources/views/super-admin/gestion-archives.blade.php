@@ -143,6 +143,7 @@
                                         <div class="col-md-9">
                                             <select class="form-control" id="searchBy2" name="searchBy">
                                                 <option value="call_number">Cote</option>
+                                                <option value="parent_name">Série</option>
                                                 <option value="child_name">Sous-série</option>
                                                 <option value="department_name">Direction</option>
                                             </select>
@@ -202,7 +203,7 @@
                     <div class="panel panel-primary">
                         <div class="panel-heading clearfix">
                             <div class="pull-left">
-                                <h4>Toutes les archives</h4>
+                                <h4>Toutes les archives ({{ count($archives) }})</h4>
                             </div>
                         </div>
                         <div class="panel-body" style="padding: 0;">
@@ -243,36 +244,42 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($archives as $archive)
-                                            <tr id="{{ $archive->id }}" class="disabled_user odd" role="row">
-                                                <td> {{ $archive->id }} </td>
-                                                <td class="sorting_1">{{ $archive->call_number }}</td>
-                                                <td>{{ $archive->service->direction->name }}</td>
-                                                <td>{{ $archive->service->name }}</td>
-                                                <td>{{ $archive->department->name }} </td>
-                                                <td>{{ $archive->created_at->addYears($archive->duree)->format('d-m-Y') }}</td>
-                                                <td>
-                                                    <div id="actionButtons" class="btn-group pull-right">
-                                                        <a href="#infos_archiveID{{ $archive->id }}"
-                                                            class="editUser btn btn-info show-archive-info"
-                                                            data-accountid="ccamus" title="Voir plus d'informations"
-                                                            data-info-id="{{ $archive->id }}">
-                                                            <span class="fa fa-fw fa-info"></span>
-                                                        </a>
+                                        @if(count($archives) != 0)
+                                            @foreach ($archives as $archive)
+                                                <tr id="{{ $archive->id }}" class="disabled_user odd" role="row">
+                                                    <td> {{ $archive->id }} </td>
+                                                    <td class="sorting_1">{{ $archive->call_number }}</td>
+                                                    <td>{{ $archive->service->direction->name }}</td>
+                                                    <td>{{ $archive->service->name }}</td>
+                                                    <td>{{ $archive->department->name }} </td>
+                                                    <td>{{ $archive->created_at->addYears($archive->duree)->format('d-m-Y') }}</td>
+                                                    <td>
+                                                        <div id="actionButtons" class="btn-group pull-right">
+                                                            <a href="#infos_archiveID{{ $archive->id }}"
+                                                                class="editUser btn btn-info show-archive-info"
+                                                                data-accountid="ccamus" title="Voir plus d'informations"
+                                                                data-info-id="{{ $archive->id }}">
+                                                                <span class="fa fa-fw fa-info"></span>
+                                                            </a>
 
-                                                        <a href="{{ route('files.view', $archive) }}" class="btn  btn-info"
-                                                            title="Voir les fichiers"  style="margin-left:5px;">
-                                                            <span class="fa fa-fw fa-eye"></span>
-                                                        </a>
+                                                            <a href="{{ route('files.view', $archive) }}" class="btn  btn-info"
+                                                                title="Voir les fichiers"  style="margin-left:5px;">
+                                                                <span class="fa fa-fw fa-eye"></span>
+                                                            </a>
 
-                                                        <a href="{{ route('archives.download', $archive) }}" class="btn  btn-info"
-                                                            title="Télécharger les fichiers"  style="margin-left:5px;" >
-                                                            <span class="fa-solid fa-download"></span>
-                                                        </a>
-                                                    </div>
-                                                </td>
+                                                            <a href="{{ route('archives.download', $archive) }}" class="btn  btn-info"
+                                                                title="Télécharger les fichiers"  style="margin-left:5px;" >
+                                                                <span class="fa-solid fa-download"></span>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="7" style="text-align: center;">Aucun enregistrement disponible.</td>
                                             </tr>
-                                        @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -283,7 +290,8 @@
         </div>
 
     <div>
-        @foreach ($archives as $archive)
+        @if(count($archives) != 0)
+            @foreach ($archives as $archive)
                 <div class="overlay" id="overlay">
                     <div class="info-content" id="info-content">
                         <div  class="archiveInfos" id="infos_archiveID{{ $archive->id }}">
@@ -353,7 +361,8 @@
                         </div>
                     </div>
                 </div>
-        @endforeach
+            @endforeach
+        @endif
     </div>
 
 

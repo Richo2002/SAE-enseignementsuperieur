@@ -67,24 +67,11 @@
                                         <div class="col-md-9">
                                             <select class="form-control" id="statsBy" name="statsBy">
                                                 <option value="department">Direction</option>
-                                                <option value="service">Série</option>
-                                                <option value="subService">Sous-série</option>
+                                                <option value="serie">Série</option>
+                                                <option value="subSerie">Sous-série</option>
                                             </select>
                                         </div>
                                     </div>
-                                    {{-- <div class="form-group">
-                                        <label for="firstDate" class="col-md-3 control-label">Date de début :</label>
-                                        <div class="col-md-9">
-                                            <input type="date" class="form-control" id="firstDate" name="firstDate">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="lastDate" class="col-md-3 control-label">Date de fin :</label>
-                                        <div class="col-md-9">
-                                            <input type="date" class="form-control" id="lastDate" name="lastDate">
-                                        </div>
-                                    </div> --}}
-
                                 </div>
 
                                 <div class="row">

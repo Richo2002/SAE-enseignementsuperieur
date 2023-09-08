@@ -57,13 +57,6 @@
                                 <br>
 
                                 <div class="form-group">
-                                    <label for="nbOrder" class="col-md-3 control-label">Numéro d'ordre :</label>
-                                    <div class="col-md-9">
-                                        <input type="number" class="form-control" id="nbOrder" name="number_order" placeholder="saisissez le numéro d'ordre de l'archive" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
                                     <label for="cote" class="col-md-3 control-label">Cote :</label>
                                     <div class="col-md-9">
                                         <input type="text" class="form-control" id="cote" name="call_number" placeholder="saisissez la cote de l'archive" required>
@@ -120,9 +113,9 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="date" class="col-md-3 control-label">Date extreme :</label>
+                                    <label for="date" class="col-md-3 control-label">Dates extremes :</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" id="date" name="extreme_date" placeholder="saisissez la date extreme au format AAAA - AAAA">
+                                        <input type="text" class="form-control" id="date" name="extreme_date" placeholder="saisissez les dates extremes pour cette archive">
                                     </div>
                                 </div>
 

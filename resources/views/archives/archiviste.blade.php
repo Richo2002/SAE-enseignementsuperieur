@@ -143,9 +143,8 @@
                                         <div class="col-md-9">
                                             <select class="form-control" id="searchBy" name="searchBy">
                                                 <option value="call_number">Cote</option>
-                                                <option value="name">Sous-série</option>
-                                                <option value="piece">Pièces Constitutives</option>
-                                                <option value="tenderer">Soumissionnaires</option>
+                                                <option value="parent_name">Série</option>
+                                                <option value="child_name">Sous-série</option>
                                             </select>
                                         </div>
                                     </div>
@@ -196,7 +195,7 @@
                         <div class="panel-heading clearfix">
 
                             <div class="pull-left">
-                                <h4>Archives</h4>
+                                <h4>Archives ({{ count($filteredArchives) }})</h4>
                             </div>
                             <div class="pull-right">
                                 <a href="/archives/create" type="button" class="btn btn-default btn-sm"
@@ -212,22 +211,23 @@
                                 aria-describedby="user_userList_info">
                                     <thead>
                                         <tr role="row">
+                                            <th style="width: 100.25px;">Id</th>
                                             <th class="sorting_asc" tabindex="0"
                                                 aria-controls="user_userList" rowspan="1"
                                                 colspan="1" aria-sort="ascending"
                                                 aria-label="Identifiant: activer pour trier la colonne en descendant"
-                                                style="width: 212.25px;">Cote</th>
+                                                style="width: 175.25px;">Cote</th>
                                             <th class="sorting" tabindex="0"
                                                 aria-controls="user_userList" rowspan="1"
                                                 colspan="1"
                                                 aria-label="Courriel: activer pour trier la colonne en ascendant"
-                                                style="width: 450.25px;">Sous-série</th>
+                                                style="width: 312.25px;">Série</th>
                                             <th class="sorting_disabled" rowspan="1" colspan="1"
-                                                aria-label="Activé" style="width: 310.139px;">
-                                                Pièces Constitutives</th>
+                                                aria-label="Activé" style="width: 312.139px;">
+                                                Sous-série</th>
                                                 <th class="sorting_disabled" rowspan="1" colspan="1"
                                                 aria-label="Activé" style="width: 310.139px;">
-                                                Soumissionnaires</th>
+                                                Analyse</th>
                                             <th class="sorting_disabled" rowspan="1" colspan="1"
                                                 aria-label="role"
                                                 class="sorting_disabled" rowspan="1"
@@ -240,36 +240,43 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($filteredArchives as $archive)
-                                            <tr id="{{ $archive->id }}" role="row">
-                                                <td>{{ $archive->call_number }}</td>
-                                                <td>{{ $archive->service->name }}</td>
-                                                <td>{{ $archive->piece }}</td>
-                                                <td>{{ $archive->tenderer }} </td>
-                                                <td>{{ $archive->created_at->addYears($archive->duree)->format('d-m-Y') }}</td>
-                                                <td>
-                                                    <div id="actionButtons" class="btn-group pull-right">
+                                        @if(count($filteredArchives) != 0)
+                                            @foreach ($filteredArchives as $archive)
+                                                <tr id="{{ $archive->id }}" role="row">
+                                                    <td> {{ $archive->id }} </td>
+                                                    <td>{{ $archive->call_number }}</td>
+                                                    <td>{{ $archive->service->direction->name }}</td>
+                                                    <td>{{ $archive->service->name }}</td>
+                                                    <td>{{ $archive->analyze }} </td>
+                                                    <td>{{ $archive->created_at->addYears($archive->duree)->format('d-m-Y') }}</td>
+                                                    <td>
+                                                        <div id="actionButtons" class="btn-group pull-right">
 
-                                                        <a href="#infos_archiveID{{ $archive->id }}"
-                                                            class="editUser btn btn-info show-archive-info"
-                                                            data-accountid="ccamus" title="Voir plus d'informations"
-                                                            data-info-id="{{ $archive->id }}">
-                                                            <span class="fa fa-fw fa-info"></span>
-                                                        </a>
+                                                            <a href="#infos_archiveID{{ $archive->id }}"
+                                                                class="editUser btn btn-info show-archive-info"
+                                                                data-accountid="ccamus" title="Voir plus d'informations"
+                                                                data-info-id="{{ $archive->id }}">
+                                                                <span class="fa fa-fw fa-info"></span>
+                                                            </a>
 
-                                                        <a href="{{ route('files.view', $archive) }}" class="btn  btn-info"
-                                                            title="Voir les fichiers"  style="margin-left:5px;">
-                                                            <span class="fa fa-fw fa-eye"></span>
-                                                        </a>
+                                                            <a href="{{ route('files.view', $archive) }}" class="btn  btn-info"
+                                                                title="Voir les fichiers"  style="margin-left:5px;">
+                                                                <span class="fa fa-fw fa-eye"></span>
+                                                            </a>
 
-                                                        <a href="{{ route('archives.download', $archive) }}" class="btn  btn-info"
-                                                            title="Télécharger les fichiers"  style="margin-left:5px;">
-                                                            <span class="fa-solid fa-download"></span>
-                                                        </a>
-                                                    </div>
-                                                </td>
+                                                            <a href="{{ route('archives.download', $archive) }}" class="btn  btn-info"
+                                                                title="Télécharger les fichiers"  style="margin-left:5px;">
+                                                                <span class="fa-solid fa-download"></span>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="6" style="text-align: center;">Aucun enregistrement disponible.</td>
                                             </tr>
-                                        @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -289,75 +296,77 @@
 
 
 <div>
-    @foreach ($filteredArchives as $archive)
-        @if ($archive->id )
-            <div class="overlay" id="overlay">
-                <div class="info-content" id="info-content">
-                    <div  class="archiveInfos" id="infos_archiveID{{ $archive->id }}">
+    @if(count($filteredArchives) != 0)
+        @foreach ($filteredArchives as $archive)
+            @if ($archive->id )
+                <div class="overlay" id="overlay">
+                    <div class="info-content" id="info-content">
+                        <div  class="archiveInfos" id="infos_archiveID{{ $archive->id }}">
 
-                        <table>
-                            <thead>
-                                <th class="bold">Métadonnées de gestion</th>
-                                <th>Valeur pour l'archive</th>
-                            </thead>
-                            <tr>
-                                <td class="bold">Cote</td>
-                                <td class="sorting_1">{{ $archive->call_number }}</td>
-                            </tr>
-                            <tr>
-                                <td class="bold">Série</td>
-                                <td>{{ $archive->service->direction->name }}</td>
-                            </tr>
-                            <tr>
-                                <td class="bold">Sous-série</td>
-                                <td>{{ $archive->service->name }}</td>
-                            </tr>
-                            <tr>
-                                <td class="bold">Projet ou Programme</td>
-                                <td>{{ $archive->project }}</td>
-                            </tr>
-                            <tr>
-                                <td class="bold">Analyse</td>
-                                <td>{{ $archive->analyze }}</td>
-                            </tr>
-                            <tr>
-                                <td class="bold">Pièces jointes</td>
-                                <td>{{ $archive->piece }}</td>
-                            </tr>
-                            <tr>
-                                <td class="bold">Soumissionnaires</td>
-                                <td>{{ $archive->tenderer }}</td>
-                            </tr>
-                            <tr>
-                                <td class="bold">Date extreme</td>
-                                <td>{{ $archive->extreme_date }}</td>
-                            </tr>
-                            <tr>
-                                <td class="bold">Observations</td>
-                                <td>{{ $archive->observation }}</td>
-                            </tr>
-                            <tr>
-                                <td class="bold">Date de création</td>
-                                <td>{{ $archive->created_at }}</td>
-                            </tr>
-                            <tr>
-                                <td class="bold">Durée d'utilité administrative</td>
-                                <td>{{ $archive->duree }} ans</td>
-                            </tr>
-                            <tr>
-                                <td class="bold">Date d'archivage</td>
-                                <td>{{ $archive->created_at->addYears($archive->duree) }}</td>
-                            </tr>
-                            <tr>
-                                <td class="bold">Sort final</td>
-                                <td>{{ $archive->final_sort }}</td>
-                            </tr>
-                        </table>
+                            <table>
+                                <thead>
+                                    <th class="bold">Métadonnées de gestion</th>
+                                    <th>Valeur pour l'archive</th>
+                                </thead>
+                                <tr>
+                                    <td class="bold">Cote</td>
+                                    <td class="sorting_1">{{ $archive->call_number }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="bold">Série</td>
+                                    <td>{{ $archive->service->direction->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="bold">Sous-série</td>
+                                    <td>{{ $archive->service->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="bold">Projet ou Programme</td>
+                                    <td>{{ $archive->project }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="bold">Analyse</td>
+                                    <td>{{ $archive->analyze }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="bold">Pièces jointes</td>
+                                    <td>{{ $archive->piece }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="bold">Soumissionnaires</td>
+                                    <td>{{ $archive->tenderer }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="bold">Date extreme</td>
+                                    <td>{{ $archive->extreme_date }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="bold">Observations</td>
+                                    <td>{{ $archive->observation }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="bold">Date de création</td>
+                                    <td>{{ $archive->created_at }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="bold">Durée d'utilité administrative</td>
+                                    <td>{{ $archive->duree }} ans</td>
+                                </tr>
+                                <tr>
+                                    <td class="bold">Date d'archivage</td>
+                                    <td>{{ $archive->created_at->addYears($archive->duree) }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="bold">Sort final</td>
+                                    <td>{{ $archive->final_sort }}</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endif
-    @endforeach
+            @endif
+        @endforeach
+    @endif
 </div>
 
 
