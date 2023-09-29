@@ -17,7 +17,7 @@
     </div><!--<img alt="Image d'archives" src="img/backImg.png" class="imgh">-->
 
     <footer class="footSection">
-        <p class="footText"><span class="copyright">&copy;</span> 2023-MEM. Tous droits réservés.</p>
+        <p class="footText"><span class="copyright">&copy;</span> 2023-MESRS. Tous droits réservés.</p>
     </footer>
 
     <script src="/js/script.js"></script>

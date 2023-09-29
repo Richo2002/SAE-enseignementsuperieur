@@ -105,7 +105,7 @@
 <body>
   <div class="container">
 
-    <img src="/img/sceauBenin.png" class="logo_head" alt="logo">
+    <img src="/img/sceauBenin.png" class="logo_head" alt="Logo">
 
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />

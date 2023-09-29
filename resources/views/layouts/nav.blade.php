@@ -1,5 +1,5 @@
 <div class="navbar">
-    <div><img alt="Logo du Ministère de l'eau et des mines" src="/img/sceauBenin.png" class="logo"></div>
+    <div><img alt="Logo du Ministère de l'Enseignement Supérieur et de la Recherche Scientifique" src="/img/sceauBenin.png" class="logo"></div>
     <div class="menu-burger" onclick="toggleMenu()"><i class="fa-solid fa-bars" style="color: #ffffff; "></i></div>
     <ul class="menu">
         <li class="navbar-links"><a href="/dashboard">Accueil</a></li>
