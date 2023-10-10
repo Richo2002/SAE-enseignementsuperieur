@@ -71,6 +71,12 @@
             <ul class="submenu" id="submenu-username">
                 @if (Auth::user())
                     <li>
+                        <a href="{{ route('getProfile', Auth::user()->id ) }}">
+                            <i class="fa-regular fa-user" style="color: #ffffff; font-size: 13px;"></i>
+                            Mon profil
+                        </a>
+                    </li>
+                    <li>
                         <form action="/logout" method="POST">
                             @csrf
                             <button type="submit" id="outLogBtn">

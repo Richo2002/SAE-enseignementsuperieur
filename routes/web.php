@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/view-file-pdf/{file}', [ArchiveController::class, 'viewPDF'])->name('view.pdf');
 
     Route::resource('archivists', UserController::class);
+    Route::get('/archivists-profile/{id}', [UserController::class, 'getProfile'])->name('getProfile');
+    Route::put('/archivists-profile-update/{id}', [UserController::class, 'updateProfile'])->name('updateProfile');
 
     Route::resource('directions', DirectionController::class);
 

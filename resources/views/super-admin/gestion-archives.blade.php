@@ -220,15 +220,15 @@
                                                 aria-controls="user_userList" rowspan="1"
                                                 colspan="1" aria-sort="ascending"
                                                 aria-label="Identifiant: activer pour trier la colonne en descendant"
-                                                style="width: 130.25px;">Cote</th>
+                                                style="width: 175.25px;">Cote</th>
                                             <th class="sorting" rowspan="1" colspan="1"
                                                 aria-label="Courriel: activer pour trier la colonne en ascendant"
-                                                style="width: 312.25px;">Série</th>
+                                                style="width: 325.25px;">Série</th>
                                             <th class="sorting" tabindex="0"
                                                 aria-controls="user_userList" rowspan="1"
                                                 colspan="1"
                                                 aria-label="Courriel: activer pour trier la colonne en ascendant"
-                                                style="width: 312.25px;">Sous-série</th>
+                                                style="width: 300.25px;">Sous-série</th>
                                             <th class="sorting_disabled" rowspan="1" colspan="1"
                                                 aria-label="Activé" style="width: 150.139px;">
                                                 Direction</th>
@@ -243,11 +243,14 @@
                                                 Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody  style="font-size: 14px">
                                         @if(count($archives) != 0)
+                                            @php
+                                                $numero=1
+                                            @endphp
                                             @foreach ($archives as $archive)
                                                 <tr id="{{ $archive->id }}" class="disabled_user odd" role="row">
-                                                    <td> {{ $archive->id }} </td>
+                                                    <td> {{ $numero++ }} </td>
                                                     <td class="sorting_1">{{ $archive->call_number }}</td>
                                                     <td>{{ $archive->service->direction->name }}</td>
                                                     <td>{{ $archive->service->name }}</td>

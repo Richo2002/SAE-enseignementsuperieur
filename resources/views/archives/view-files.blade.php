@@ -107,9 +107,12 @@
                                                 </thead>
 
                                                 <tbody>
+                                                    @php
+                                                        $numero=1
+                                                    @endphp
                                                     @foreach ($files as $file)
                                                         <tr>
-                                                            <td>{{ $file->id }}</td>
+                                                            <td>{{ $numero++ }}</td>
                                                             <td>{{ $file->basename }}</td>
                                                             <td>{{ $file->created_at }}</td>
                                                             <td>

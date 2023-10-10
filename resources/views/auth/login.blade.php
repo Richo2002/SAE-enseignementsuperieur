@@ -18,9 +18,7 @@
     .container {
 
       max-width: 400px;
-      min-height: 320px;
       margin: 100px auto;
-      /*padding: 20px;*/
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       background-color: #ffffff;
@@ -112,18 +110,18 @@
 
     <form id="loginForm" method="POST" action="{{ route('login') }}">
         @csrf
-      <div class="form-group">
-        <input type="email" class="form-control" id="username" placeholder="Adresse email" :value="__('Email')" name="email" required>
-        @error('email')
+        <div class="form-group">
+            <input type="email" class="form-control" id="username" placeholder="Adresse email" :value="__('Email')" name="email" required>
+            @error('email')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="form-group">
+            <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password" required>
+            @error('password')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-      </div>
-
-      <div class="form-group">
-        <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password" required>
-        @error('password')
-        <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
       </div>
 
       <div class="btn mx-auto">
@@ -131,8 +129,7 @@
       </div>
       </form>
       <br/>
-      <a href="forgot-password" id="forgotPasswordLink">Mot de passe oublié ?</a>
-    </form>
+    <a href="forgot-password" id="forgotPasswordLink">Mot de passe oublié ?</a>
   </div>
   {{-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script> --}}

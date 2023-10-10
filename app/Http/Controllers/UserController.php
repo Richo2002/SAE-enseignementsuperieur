@@ -128,14 +128,41 @@ class UserController extends Controller
     {
         $archivist = User::findOrFail(intval($id));
 
+        $department = Department::where('name', $request->direction)->first();
+
+        if($department === null){
+            $department = Department::create([
+                'name' => $request->direction,
+            ]);
+        }
+
         $archivist->firstname = $request->firstname;
         $archivist->lastname = $request->lastname;
         $archivist->email = $request->email;
         $archivist->phone_number = $request->phone_number;
-        $archivist->department_id = $request->departmentId;
+        $archivist->department_id = $department->id;
 
         $archivist->save();
 
+        return redirect()->route('archivists.index');
+    }
+
+    public function getProfile(int $id)
+    {
+        $archivist = User::findOrFail(intval($id));
+
+        return view('archivistes.archivist-profile', [
+            'archivist' => $archivist
+        ]);
+    }
+
+    public function enableOrDisable(int $id)
+    {
+        $archivist = User::where('type', '<>', 'Super Administrateur')->findOrfail(intval($id));
+
+        $archivist->status ? $archivist->update(['status' => false]) : $archivist->update(['status' => true]);
+
+        session()->flash('message', $archivist->status ? 'Compte activé avec succès' : 'Compte désactivé avec succès');
         return redirect()->route('archivists.index');
     }
 
@@ -152,4 +179,14 @@ class UserController extends Controller
         ]);
     }
 
+    public function destroy(int $id)
+    {
+        $archivist = User::where('type', '<>', 'Super Administrateur')->findOrfail(intval($id));
+        if ($archivist) {
+            $archivist->delete();
+        }
+
+        session()->flash('message', $archivist->status ? 'Compte activé avec succès' : 'Compte désactivé avec succès');
+        return redirect()->route('archivists.index');
+    }
 }

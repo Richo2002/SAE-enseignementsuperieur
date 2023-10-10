@@ -221,12 +221,12 @@
                                                 aria-controls="user_userList" rowspan="1"
                                                 colspan="1"
                                                 aria-label="Courriel: activer pour trier la colonne en ascendant"
-                                                style="width: 312.25px;">Série</th>
+                                                style="width: 325.25px;">Série</th>
                                             <th class="sorting_disabled" rowspan="1" colspan="1"
-                                                aria-label="Activé" style="width: 312.139px;">
+                                                aria-label="Activé" style="width: 300.139px;">
                                                 Sous-série</th>
-                                                <th class="sorting_disabled" rowspan="1" colspan="1"
-                                                aria-label="Activé" style="width: 310.139px;">
+                                            <th class="sorting_disabled" rowspan="1" colspan="1"
+                                                aria-label="Activé" style="width: 280.139px;">
                                                 Analyse</th>
                                             <th class="sorting_disabled" rowspan="1" colspan="1"
                                                 aria-label="role"
@@ -241,9 +241,12 @@
                                     </thead>
                                     <tbody>
                                         @if(count($filteredArchives) != 0)
+                                            @php
+                                                $numero=1
+                                            @endphp
                                             @foreach ($filteredArchives as $archive)
                                                 <tr id="{{ $archive->id }}" role="row">
-                                                    <td> {{ $archive->id }} </td>
+                                                    <td> {{ $numero++ }} </td>
                                                     <td>{{ $archive->call_number }}</td>
                                                     <td>{{ $archive->service->direction->name }}</td>
                                                     <td>{{ $archive->service->name }}</td>
@@ -274,7 +277,7 @@
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="6" style="text-align: center;">Aucun enregistrement disponible.</td>
+                                                <td colspan="7" style="text-align: center;">Aucun enregistrement disponible.</td>
                                             </tr>
                                         @endif
                                     </tbody>

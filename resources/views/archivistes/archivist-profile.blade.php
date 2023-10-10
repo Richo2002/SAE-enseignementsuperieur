@@ -57,7 +57,8 @@
                         <div class="col-xs-12">
                             <h1 class="page-header">
                                 <small></small>
-                                <span>Nouvel utilisateur</span>
+                                <span><i class="fa-regular fa-user"></i>
+                                    Profil Archiviste</span>
                             </h1>
                         </div>
                     </div>
@@ -65,93 +66,77 @@
                 <div class="container-fluid">
                     <div class="col-md-6">
                         <div class="panel panel-info">
-                            <div class="panel-heading">Compte utilisateur</div>
+                            <div class="panel-heading clearfix">
+                                <div class="pull-left">
+                                    <h4>Informations du profil</h4>
+                                </div>
+
+                                <div class="pull-right">
+                                    <button type="button" onclick="chargerPage('/dashboard')"
+                                        class="btn btn-warning" id="userAccountCancelBtn"
+                                            title="Annuler"><i class="fa fa-undo"></i> Fermer</button>
+                                </div>
+                            </div>
                             <div class="panel-body">
                                 <form class="form-horizontal row" id="user_userAccountForm" method="POST"
-                                    action="{{ isset($archivist) ? '/archivists/' . $archivist->id : '/archivists' }}">
+                                    action="{{ route('updateProfile', $archivist->id) }}">
                                     @csrf
-                                    @if (isset($archivist))
-                                        @method('PUT')
-                                    @endif
+                                    @method('PUT')
 
                                     <div class="col-xs-12">
                                         <br>
                                         <div class="form-group">
-                                            <label for="lastName" class="col-md-3 control-label">Nom :<span
-                                                    style="color : red">*</span></label>
+                                            <label for="lastName" class="col-md-3 control-label">Nom :</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" id="lastName"
-                                                    name="lastname" placeholder="Nom de l'archiviste" required
-                                                    value="{{ isset($archivist) ? $archivist->lastname : old('lastname') }}">
-                                                    @error('lastname')
-                                                        <div class="text-danger">{{ $message }}</div>
-                                                    @enderror
+                                                <input type="text" class="form-control" id="lastName" readonly
+                                                    name="lastname" value="{{ $archivist->lastname }}">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="firstName" class="col-md-3 control-label">Prénoms :<span
-                                                    style="color : red">*</span></label>
+                                            <label for="firstName" class="col-md-3 control-label">Prénoms :</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" id="accountName"
-                                                    name="firstname" placeholder="Prénoms de l'archiviste" required
-                                                    value="{{ isset($archivist) ? $archivist->firstname : old('firstname') }}">
-                                                    @error('firstname')
-                                                        <div class="text-danger">{{ $message }}</div>
-                                                    @enderror
+                                                <input type="text" class="form-control" id="accountName" readonly
+                                                    name="firstname" value="{{ $archivist->firstname }}">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="phone" class="col-md-3 control-label">Téléphone :<span
-                                                    style="color : red">*</span></label>
+                                            <label for="phone" class="col-md-3 control-label">Téléphone :</label>
                                             <div class="col-md-9">
-                                                <input type="number" class="form-control" id="phone"
-                                                    name="phone_number" placeholder="Numéro de téléphone" required
-                                                    value="{{ isset($archivist) ? $archivist->phone_number : old('phone_number') }}">
-                                                    @error('phone_number')
-                                                        <div class="text-danger">Le numéro de téléphone doit comporter 8 chiffres.</div>
-                                                    @enderror
+                                                <input type="number" class="form-control" id="phone" readonly
+                                                    name="phone_number" value="{{ $archivist->phone_number }}">
                                             </div>
                                         </div>
+                                        @if (Auth::user()->type == "Archiviste")
+                                            <div class="form-group">
+                                                <label for="direction" class="col-md-3 control-label">Direction :</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control" id="direction" name="direction"
+                                                    readonly value="{{ $archivist->department->name }}">
+                                                </div>
+                                            </div>
+                                        @endif
                                         <div class="form-group">
-                                            <label for="courriel" class="col-md-3 control-label">Adresse e-mail :<span
-                                                    style="color : red">*</span> </label>
+                                            <label for="courriel" class="col-md-3 control-label">Adresse e-mail :</label>
                                             <div class="col-md-9">
                                                 <input type="email" class="form-control" id="courriel" name="email"
-                                                    placeholder="E-mail" required
-                                                    value="{{ isset($archivist) ? $archivist->email : old('email') }}">
-                                                    @error('email')
-                                                        <div class="text-danger">{{ $message }}</div>
-                                                    @enderror
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="direction" class="col-md-3 control-label">Direction :<span
-                                                    style="color : red">*</span></label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control" id="direction" name="direction"
-                                                placeholder="Nom de la direction" required
-                                                value="{{ isset($archivist) ? $archivist->department->name : old('department') }}">
-                                                @error('department')
-                                                    <div class="text-danger">{{ $message }}</div>
-                                                @enderror
+                                                readonly value="{{ $archivist->email }}">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    {{-- <div class="row">
                                         <div class="col-xs-6 pull-right">
                                             <div class="form-group">
                                                 <div class="">
-                                                    <button type="button" onclick="chargerPage('/archivists')"
+                                                    <button type="button" onclick="chargerPage('/dashboard')"
                                                         class="btn btn-warning" id="userAccountCancelBtn"
-                                                        title="Annuler"><i class="fa fa-undo"></i> Annuler</button>
+                                                        title="Annuler"><i class="fa fa-undo"></i> Fermer</button>
                                                     <button id="user_saveUser" type="submit" class="btn btn-success"
-                                                        title="{{ isset($archivist) ? 'Modifier' : 'Enregistrer' }}"><i
-                                                            class="fa fa-save"></i>
-                                                        {{ isset($archivist) ? 'Modifier' : 'Enregistrer' }}</button>
+                                                        title="Modifier le mot de passe"><i
+                                                            class="fa fa-save"></i> Changer de mot de passe</button>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </form>
                             </div>
                         </div>

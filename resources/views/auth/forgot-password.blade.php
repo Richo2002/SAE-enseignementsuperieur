@@ -16,9 +16,7 @@
       width: 100%;
     }
     .container {
-
       max-width: 400px;
-      min-height: 320px;
       margin: 100px auto;
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -81,6 +79,20 @@
     .btn{
         padding-bottom: 20px;
     }
+
+    #loginLink {
+      display: block;
+      text-align: center;
+      color: rgb(34,88,166);
+      font-size: 14px;
+      margin: 0 auto;
+      width: 35%;
+      padding-bottom: 20px;
+    }
+    #loginLink:hover {
+      text-decoration: none;
+      font-size: 16px;
+    }
   </style>
 
 </head>
@@ -89,8 +101,9 @@
 <body>
   <div class="container">
     <img src="/img/sceauBenin.png" class="logo_head" alt="Logo">
-    {{-- <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+    {{-- <div class="mb-4 text-sm text-gray-600" style="text-align: center; padding-bottom: 20px;">
+        {{ __('Vous avez oublié votre mot de passe ? Pas de problème. Saississez votre email dans la
+        zone ci-dessous et nous vous enverrons un lien de réinitialisation de mot de passe.') }}
     </div> --}}
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <form id="loginForm" method="POST" action="{{ route('password.email') }}">
@@ -102,7 +115,8 @@
       <div class="btn">
          <button type="submit"> Confirmer </button>
       </div>
-    </form>
+    </form><br/>
+    <a href="login" id="loginLink">Se connecter</a>
   </div>
 </body>
 </html>

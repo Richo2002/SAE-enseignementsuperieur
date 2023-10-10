@@ -295,7 +295,7 @@ class ArchiveController extends Controller
             $names[] = $file->basename;
         }
 
-        $zipFileName = 'archive_' . $archive->id . '.zip';
+        $zipFileName = 'archive_' . $archive->call_number . '.zip';
         $zipPath = storage_path('app/' . $zipFileName);
 
         $zip = new ZipArchive;
