@@ -25,8 +25,8 @@ class UserRequest extends FormRequest
     {
         $id = Route::current()->parameter('archivist');
         return [
-            'firstname' => ['required', 'string', 'max:50'],
-            'lastname' => ['required', 'string', 'max:25'],
+            'firstname' => ['required', 'string', 'max:100'],
+            'lastname' => ['required', 'string', 'max:50'],
             'email' => ['required', 'email', Rule::unique('users')->ignore($id ?? null)],
             'phone_number' => ['required', 'regex:/^\d{8}$/'],
         ];

@@ -116,7 +116,7 @@
                                                             <td>{{ $file->basename }}</td>
                                                             <td>{{ $file->created_at }}</td>
                                                             <td>
-                                                                <a href="{{ route('view.pdf', $file) }}" class="btn  btn-info" title="Visualiser le fichier">
+                                                                <a href="{{ route('view.pdf', $file) }}" target="_blank" class="btn  btn-info" title="Visualiser le fichier">
                                                                     <span class="fa fa-fw fa-eye"></span>
                                                                 </a>
                                                             </td>

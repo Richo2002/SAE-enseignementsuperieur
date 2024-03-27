@@ -48,6 +48,11 @@ class ArchiveController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'call_number' => 'required',
+            'analyze' => 'required',
+            'service_id' => 'required',
+        ]);
 
         $department = Department::findOrFail(intval(Auth::user()->department_id));
 
@@ -55,11 +60,10 @@ class ArchiveController extends Controller
 
         if($find_call_number != null)
         {
-            return redirect()->route('archives.index')->withErrors(['message' => 'Enregistrement non effectué car cette archive a déjà été enregistrée.']);
+            return redirect()->route('archives.index')->withErrors(['message' => 'Enregistrement non effectué car une archive avec la même cote existe déjà.']);
         }
         else
         {
-
             $archive = Archive::create([
                 'call_number' => $request->call_number,
                 'project' => $request->project,
@@ -75,33 +79,36 @@ class ArchiveController extends Controller
                 'department_id' =>$department->id,
             ]);
 
-            $form_files = $request->file('myfiles');
-            $folder = 'archives/'.Str::lower($department->name).'/'.$request->call_number;
-            $folder = str_replace(' ', '_', $folder);
-
-            $allfiles = [];
-            $allNames = [];
-
-            foreach($form_files as $myfile)
+            if($request->file('myfiles'))
             {
-                //récupérer les noms originaux des fichiers
-                $allNames[] = $myfile->getClientOriginalName();
+                $form_files = $request->file('myfiles');
+                $folder = 'archives/'.Str::lower($department->name).'/'.$request->call_number;
+                $folder = str_replace(' ', '_', $folder);
 
-                //stocker les fichiers sur le serveur
-                $path_image = Storage::putFile('public/'.$folder, $myfile);
-                $path_image_convert_to_table = explode('/', $path_image);
+                $allfiles = [];
+                $allNames = [];
 
-                $allfiles[] = $path_image_convert_to_table;
-            }
+                foreach($form_files as $myfile)
+                {
+                    //récupérer les noms originaux des fichiers
+                    $allNames[] = $myfile->getClientOriginalName();
 
-            for($i = 0; $i < count($allfiles); $i++)
-            {
-                //enregistrement des fichiers dans la base de données
-                $newFile = File::create([
-                    'path' => end($allfiles[$i]),
-                    'basename' => $allNames[$i],
-                    'archive_id' => $archive->id,
-                ]);
+                    //stocker les fichiers sur le serveur
+                    $path_image = Storage::putFile('public/'.$folder, $myfile);
+                    $path_image_convert_to_table = explode('/', $path_image);
+
+                    $allfiles[] = $path_image_convert_to_table;
+                }
+
+                for($i = 0; $i < count($allfiles); $i++)
+                {
+                    //enregistrement des fichiers dans la base de données
+                    $newFile = File::create([
+                        'path' => end($allfiles[$i]),
+                        'basename' => $allNames[$i],
+                        'archive_id' => $archive->id,
+                    ]);
+                }
             }
 
             return redirect()->route('archives.index');
@@ -273,7 +280,7 @@ class ArchiveController extends Controller
         }
         else
         {
-            return redirect()->back()->withErrors(['message' => 'Impossible de visualiser ce fichier car le chemin vers ce celui-ci n\'existe plus.']);
+            return redirect()->back()->withErrors(['message' => 'Impossible de visualiser ce fichier car il n\'est plus disponible.']);
         }
     }
 

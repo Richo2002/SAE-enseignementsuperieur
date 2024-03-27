@@ -105,12 +105,13 @@
         {{ __('Vous avez oublié votre mot de passe ? Pas de problème. Saississez votre email dans la
         zone ci-dessous et nous vous enverrons un lien de réinitialisation de mot de passe.') }}
     </div> --}}
-    <x-auth-session-status class="mb-4" :status="session('status')" />
     <form id="loginForm" method="POST" action="{{ route('password.email') }}">
       @csrf
       <div class="form-group">
         <input type="email" class="form-control" id="username" placeholder="Adresse email" name="email" :value="old('email')">
       </div>
+      <x-auth-session-status  :status="session('status')" class="mt-2" style="list-style-type: none;
+            text-decoration: none; text-align: justify; padding: 0 20px; padding-bottom: 15px; color: red;"/>
 
       <div class="btn">
          <button type="submit"> Confirmer </button>

@@ -228,9 +228,9 @@
                                                 aria-controls="user_userList" rowspan="1"
                                                 colspan="1"
                                                 aria-label="Courriel: activer pour trier la colonne en ascendant"
-                                                style="width: 300.25px;">Sous-série</th>
+                                                style="width: 275.25px;">Sous-série</th>
                                             <th class="sorting_disabled" rowspan="1" colspan="1"
-                                                aria-label="Activé" style="width: 150.139px;">
+                                                aria-label="Activé" style="width: 280.139px;">
                                                 Direction</th>
                                             <th class="sorting_disabled" rowspan="1" colspan="1"
                                                 aria-label="role"

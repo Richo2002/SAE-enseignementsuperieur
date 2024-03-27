@@ -158,8 +158,8 @@
                                 </div>
 
                                 <div  id="fileInputsContainer" class="form-group">
-                                    <label for="document_filesBrowser" class="col-md-3 control-label">Choix des documents (obligatoire) :</label>
-                                    <input type="file" name="myfiles[]" id="document_filesBrowser" class="hide" accept=".pdf" multiple required>
+                                    <label for="document_filesBrowser" class="col-md-3 control-label">Choix des documents (optionnel) :</label>
+                                    <input type="file" name="myfiles[]" id="document_filesBrowser" class="hide" accept=".pdf" multiple>
                                     <div class="col-md-9">
                                         <div id="document_dropZone">
                                             <label for="document_filesBrowser" class="form-control" id="customFileInput">

@@ -58,7 +58,13 @@
                             <h1 class="page-header">
                                 <small></small>
                                 <span><i class="fa-regular fa-user"></i>
-                                    Profil Archiviste</span>
+                                    Profil
+                                    @if (Auth::user()->type == "Archiviste")
+                                        Archiviste
+                                    @else
+                                        Administrateur
+                                    @endif
+                                </span>
                             </h1>
                         </div>
                     </div>

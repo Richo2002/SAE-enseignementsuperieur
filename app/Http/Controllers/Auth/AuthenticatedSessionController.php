@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -25,11 +26,23 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $user = User::where('email', $request->input('email'))->first();
 
-        $request->session()->regenerate();
+        //Authentifier l'utilisateur que lorsque son compte est actif (status different de 0)
+        if ($user && $user->status == 1 || !$user)
+        {
+            $request->authenticate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+            $request->session()->regenerate();
+
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
+        else
+        {
+            return back()->withErrors([
+                'email' => 'Erreur ! Votre compte a été désactivé. Veuillez contacter l\'administrateur pour résoudre le problème.',
+            ]);
+        }
     }
 
     /**

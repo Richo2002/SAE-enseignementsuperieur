@@ -47,6 +47,14 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
+        $request->validate([
+            'lastname' => 'required',
+            'firstname' => 'required',
+            'email' => 'required',
+            'phone_number' => 'required',
+            'direction' => 'required',
+        ]);
+
         $department = Department::where('name', $request->direction)->first();
 
         if($department === null){
